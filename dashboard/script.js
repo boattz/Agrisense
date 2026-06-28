@@ -263,7 +263,12 @@ function startPolling() {
 
 // ─── Init ─────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
-  $('ip-badge').textContent = new URL(CONFIG.apiUrl).hostname;
+  try {
+    const urlObj = new URL(CONFIG.apiUrl, window.location.href);
+    $('ip-badge').textContent = urlObj.hostname || 'Local';
+  } catch (e) {
+    $('ip-badge').textContent = 'ESP32';
+  }
   startPolling();
 });
 
